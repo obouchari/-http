@@ -41,10 +41,16 @@
         });
     }
 
-    function extend(destObj, ...srcObjs) {
-        let target = destObj || {};
-
-        
+    function extend(target, ...sources) {
+        sources.forEach((src) => {
+            if (Object.keys(src).length) {
+                for (var prop in src) {
+                    if (src.hasOwnProperty(prop)) {
+                        target[prop] = src[prop];
+                    }
+                }
+            }
+        });
         // Return the modified object
         return target;
     };
