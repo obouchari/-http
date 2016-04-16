@@ -2,6 +2,8 @@
 
     'use strict';
 
+    let Promise = require('es6-promise').Promise;
+
     /**
      * Generate an HTTP request.
      * @param  {Object} request   Configuration object
@@ -15,13 +17,18 @@
         };
     };
 
-    createShortMethods('get', 'delete', 'head', 'jsonp'); // 'get', 'delete', 'head', 'jsonp'
-    createShortMethodsWithData('post', 'put', 'patch'); // 'post', 'put', 'patch'
+    _createShortMethods('get', 'delete', 'head', 'jsonp'); // 'get', 'delete', 'head', 'jsonp'
+    _createShortMethodsWithData('post', 'put', 'patch'); // 'post', 'put', 'patch'
 
-    function createShortMethods(...names) {
+    /**
+     * Shortcut methods to perform 'GET', 'DELETE', 'HEAD', 'JSONP'
+     * @param  {Array} names    List of methods to create
+     * @return {HttpPromise}    Future object
+     */
+    function _createShortMethods(...names) {
         names.forEach((name) => {
             http[name] = (url, config) => {
-                return http(extend({}, config || {}, {
+                return http(_extend({}, config || {}, {
                     method: name,
                     url: url
                 }));
@@ -29,10 +36,15 @@
         });
     }
 
-    function createShortMethodsWithData(...names) {
+    /**
+     * Shortcut methods to perform 'POST', 'PUT', 'PATCH'
+     * @param  {Array} names    List of methods to create
+     * @return {HttpPromise}    Future object
+     */
+    function _createShortMethodsWithData(...names) {
         names.forEach((name) => {
             http[name] = (url, data, config) => {
-                return http(extend({}, config || {}, {
+                return http(_extend({}, config || {}, {
                     method: name,
                     url: url,
                     data: data
@@ -41,7 +53,13 @@
         });
     }
 
-    function extend(target, ...sources) {
+    /**
+     * Extend an object with properties from passed in objects
+     * @param  {Object} target     Target Object
+     * @param  {Array}  sources    Source Objects
+     * @return {Object}            Modified object
+     */
+    function _extend(target, ...sources) {
         sources.forEach((src) => {
             if (Object.keys(src).length) {
                 for (var prop in src) {
@@ -51,9 +69,8 @@
                 }
             }
         });
-        // Return the modified object
         return target;
-    };
+    }
 
     window.$http = http;
 
