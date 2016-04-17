@@ -58,25 +58,6 @@
         });
     }
 
-    /**
-     * Extend an object with properties from passed in objects
-     * @param  {Object} target     Target Object
-     * @param  {Array}  sources    Source Objects
-     * @return {Object}            Modified object
-     */
-    // function _extend(target, ...sources) {
-    //     sources.forEach((src) => {
-    //         if (Object.keys(src).length) {
-    //             for (var prop in src) {
-    //                 if (src.hasOwnProperty(prop)) {
-    //                     target[prop] = src[prop];
-    //                 }
-    //             }
-    //         }
-    //     });
-    //     return target;
-    // }
-
     window.$http = http;
 
 })();

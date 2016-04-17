@@ -42,6 +42,6 @@ gulp.task('serve', ['build'], function() {
         server: './'
     });
     gulp.watch('./src/**/*.js', ['build']);
-    gulp.watch(['./src/**/*.**', './sample/**/*.*', './index.html'])
+    gulp.watch(['./dist/**/*.**', './sample/**/*.*', './index.html'])
         .on('change', browserSync.reload);
 });
