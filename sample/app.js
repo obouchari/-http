@@ -1,5 +1,5 @@
 // Using only http method
-var http = $http({});
+var http = $http({url: 'dfhbdfb'});
 
 console.log(http.then());
 

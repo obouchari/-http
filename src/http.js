@@ -17,7 +17,7 @@
         }
         return {
             then: function() {
-                return request;
+                return requestConfig;
             }
         };
     };

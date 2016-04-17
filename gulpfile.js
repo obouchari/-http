@@ -4,11 +4,12 @@ var gulp = require('gulp'),
     browserify = require('browserify'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
-    babel = require('babelify');
+    babel = require('babelify'),
+    browserSync = require('browser-sync');
 
 
 gulp.task('js', function() {
-		$.util.log('Compiling javascript files');
+    $.util.log('Compiling javascript files');
     return browserify({
             entries: './src/http.js',
             debug: true
@@ -22,17 +23,25 @@ gulp.task('js', function() {
         })
         .pipe(source('http.js'))
         .pipe(buffer())
-        .pipe($.sourcemaps.init({loadMaps: true}))
+        .pipe($.sourcemaps.init({ loadMaps: true }))
         .pipe($.uglify())
         .pipe($.sourcemaps.write('./'))
         .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('clean', function() {
-	$.util.log('Cleaning build');
-	del('./dist');
+    $.util.log('Cleaning build');
+    del('./dist');
 });
 
+gulp.task('default', ['serve']);
 gulp.task('build', ['clean', 'js']);
 
-gulp.watch('./src/**/*.js', ['build']);
+gulp.task('serve', ['build'], function() {
+    browserSync.init({
+        server: './'
+    });
+    gulp.watch('./src/**/*.js', ['build']);
+    gulp.watch(['./src/**/*.**', './sample/**/*.*', './index.html'])
+        .on('change', browserSync.reload);
+});
