@@ -1,7 +1,7 @@
 // Using only http method
-var http = $http();
+var http = $http({});
 
-console.log(res.then());
+console.log(http.then());
 
 // Using Get
 

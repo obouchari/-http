@@ -1,13 +1,20 @@
 (() => {
 
     let Promise = require('es6-promise').Promise;
+    let _ = {
+        isObject: require('lodash.isobject'),
+        extend: require('lodash.assign')
+    };
 
     /**
      * Generate an HTTP request.
      * @param  {Object} request   Configuration object
      * @return {HttpPromise}      Future object
      */
-    let http = (request) => {
+    let http = (requestConfig) => {
+        if (!_.isObject(requestConfig)) {
+            throw 'Http request configuration must be an object.  Received: ' + requestConfig;
+        }
         return {
             then: function() {
                 return request;
@@ -26,7 +33,7 @@
     function _createShortMethods(...names) {
         names.forEach((name) => {
             http[name] = (url, config) => {
-                return http(_extend({}, config || {}, {
+                return http(_.extend({}, config || {}, {
                     method: name,
                     url: url
                 }));
@@ -42,7 +49,7 @@
     function _createShortMethodsWithData(...names) {
         names.forEach((name) => {
             http[name] = (url, data, config) => {
-                return http(_extend({}, config || {}, {
+                return http(_.extend({}, config || {}, {
                     method: name,
                     url: url,
                     data: data
@@ -57,18 +64,18 @@
      * @param  {Array}  sources    Source Objects
      * @return {Object}            Modified object
      */
-    function _extend(target, ...sources) {
-        sources.forEach((src) => {
-            if (Object.keys(src).length) {
-                for (var prop in src) {
-                    if (src.hasOwnProperty(prop)) {
-                        target[prop] = src[prop];
-                    }
-                }
-            }
-        });
-        return target;
-    }
+    // function _extend(target, ...sources) {
+    //     sources.forEach((src) => {
+    //         if (Object.keys(src).length) {
+    //             for (var prop in src) {
+    //                 if (src.hasOwnProperty(prop)) {
+    //                     target[prop] = src[prop];
+    //                 }
+    //             }
+    //         }
+    //     });
+    //     return target;
+    // }
 
     window.$http = http;
 
