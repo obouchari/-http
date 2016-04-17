@@ -28,11 +28,11 @@ gulp.task('js', function() {
         .pipe(gulp.dest('./dist'));
 });
 
-
 gulp.task('clean', function() {
 	$.util.log('Cleaning build');
 	del('./dist');
 });
 
-
 gulp.task('build', ['clean', 'js']);
+
+gulp.watch('./src/**/*.js', ['build']);
