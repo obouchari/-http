@@ -1,12 +1,17 @@
 // Using only http method
 var http = $http({
 	method: 'GET',
-	url: 'http://pokeapi.co/api/v2/pokemon/1/',
+	url: 'http://pokeapi.co/apis/v2/pokemon/1/',
 	headers: {
 
 	}
 });
-console.log(http);
+
+http.then(function(res) {
+	return res.status;
+}, function(err) {
+	console.log(err);
+});
 
 // Using Get
 // var get = $http.get('http://website.com', {

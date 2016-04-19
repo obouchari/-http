@@ -1,4 +1,4 @@
-(() => {
+((global) => {
 
     let Promise = require('es6-promise').Promise;
     let _ = {
@@ -43,9 +43,9 @@
         config.headers = _.extend({}, defaults.headers.common, requestConfig.headers);
         config.method = config.method.toUpperCase();
 
-        sendRequest(config);
+        return sendRequest(config);
 
-        console.log(config);
+        // console.log(config);
 
         // let serverRequest = function(config) {
         //     let headers = config.headers;
@@ -106,6 +106,7 @@
     function sendRequest(config) {
         let request = new XMLHttpRequest();
         let headers = config.headers;
+        let response = {};
 
         request.open(
             config.method,
@@ -119,18 +120,24 @@
             }
         }
 
-        request.onreadystatechange = function() {
-            if (this.readyState === 4) {
-                if (this.status >= 200 && this.status < 400) {
-                    console.log(this);
-                } else {
-                    console.log(this);
+        let promise = new Promise(function(resolve, reject) {
+            request.onreadystatechange = function() {
+                if (this.readyState === 4) {
+                    if (this.status >= 200 && this.status < 400) {
+                        response['data'] = this.responseText;
+                        response['status'] = this.status;
+                        resolve(this);
+                    } else {
+                        reject(Error(this));
+                    }
                 }
-            }
-        };
+            };
+        });
 
         request.send();
         request = null;
+
+        return promise;
     }
 
     _createShortMethods('get', 'delete', 'head', 'jsonp'); // 'get', 'delete', 'head', 'jsonp'
@@ -169,6 +176,6 @@
         });
     }
 
-    window.$http = http;
+    global.$http = http;
 
-})();
+})(window);
