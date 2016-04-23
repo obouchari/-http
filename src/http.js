@@ -23,10 +23,10 @@
 
     /**
      * Generate an HTTP request.
-     * @param  {Object} request   Configuration object
-     * @return {HttpPromise}      Future object
+     * @param  {Object} requestConfig   Configuration object
+     * @return {HttpPromise}    Future object
      */
-    let http = (requestConfig) => {
+    function http(requestConfig) {
 
         if (!_.isObject(requestConfig)) {
             throw 'Http request configuration must be an object.  Received: ' + requestConfig;
@@ -101,7 +101,7 @@
         //     // execute if header value is a function for merged headers
         //     return executeHeaderFns(reqHeaders, shallowCopy(config));
         // }
-    };
+    }
 
     function sendRequest(config) {
         let request = new XMLHttpRequest();
